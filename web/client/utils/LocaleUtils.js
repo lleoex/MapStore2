@@ -22,8 +22,10 @@ const vi = require('react-intl/locale-data/vi');
 const fi = require('react-intl/locale-data/fi');
 const sv = require('react-intl/locale-data/sv');
 const sk = require('react-intl/locale-data/sk');
+const ru = require('react-intl/locale-data/ru');
 
-addLocaleData([...en, ...it, ...fr, ...de, ...es, ...nl, ...zh, ...hr, ...pt, ...vi, ...fi, ...sv, ...sk]);
+addLocaleData([...en, ...it, ...fr, ...de, ...es, ...nl, ...zh, ...hr, ...pt, ...vi, ...fi, ...sv, ...sk, ...ru]);
+// addLocaleData([...en, ...ru]);
 
 /*
  * it, en, fr, de, es are the default locales and it is preferrable to customize them via configuration.
@@ -37,6 +39,10 @@ let supportedLocales = {
     "en": {
         code: "en-US",
         description: "English"
+    },
+    "ru": {
+        code: "ru-RU",
+        description: "Русский"
     },
     "fr": {
         code: "fr-FR",
@@ -118,6 +124,7 @@ export const ensureIntl = (callback) => {
         require('intl/locale-data/jsonp/fi.js');
         require('intl/locale-data/jsonp/sv.js');
         require('intl/locale-data/jsonp/sk.js');
+        require('intl/locale-data/jsonp/ru.js');
         if (callback) {
             callback();
         }

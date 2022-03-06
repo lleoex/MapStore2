@@ -60,6 +60,7 @@
     },
     "projectionDefs": [],
     "initialState": {
+      "locale": "ru-RU",
       "defaultState": {
         "annotations": {
           "config": {
@@ -148,27 +149,17 @@
             }
           }
         },
+
         "locales": {
           "supportedLocales": {
-            "it": {
-              "code": "it-IT",
-              "description": "Italiano"
-            },
+
             "en": {
               "code": "en-US",
               "description": "English"
             },
-            "fr": {
-              "code": "fr-FR",
-              "description": "Français"
-            },
-            "de": {
-              "code": "de-DE",
-              "description": "Deutsch"
-            },
-            "es": {
-              "code": "es-ES",
-              "description": "Español"
+            "ru": {
+              "code": "ru-RU",
+              "description": "Русский"
             }
           }
         }
@@ -606,8 +597,19 @@
             "cfg": {
                 "enableContextManager": true
             }
-        }, "Login","Language", "NavMenu", "Attribution", "ScrollTop", "Notifications"],
-        "maps": ["HomeDescription", "Fork", "MapSearch", "CreateNewMap", "FeaturedMaps", "ContentTabs",
+        }, "Login","Language", "NavMenu",
+          {
+            "name": "Attribution",
+            "cfg": {"src": "https://www.iwp.ru/local/templates/iwp_main_2019/images/logo.png",
+            "href": "https://www.iwp.ru/",
+            "label" : "iwp.ru"}}
+
+        , "ScrollTop", "Notifications"],
+        "maps": [
+          "HomeDescription",
+          "CreateNewMap",
+          { "name": "FeaturedMaps1", "hideFrom": ["NavMenu"]},
+          { "name": "ContentTabs1", "hideFrom": ["NavMenu"]},
 
           {
             "name": "Maps",
@@ -617,9 +619,11 @@
                 "limit": 12
               },
               "fluid": true
-            }
-          }, {
-            "name": "Dashboards",
+            },
+            "hideFrom": ["NavMenu"]
+          },
+          {
+            "name": "Dashboards1",
             "cfg": {
               "mapsOptions": {
                 "start": 0,
@@ -629,7 +633,7 @@
             }
           },
           {
-            "name": "GeoStories",
+            "name": "GeoStories1",
             "cfg": {
               "mapsOptions": {
                 "start": 0,
@@ -638,7 +642,13 @@
               "fluid": true
             }
           }
-          , "MailingLists", "Footer", {
+          ,  {
+            "name": "Footer",
+            "cfg": {"logo": {"src": "https://www.iwp.ru/local/templates/iwp_main_2019/images/logo.png",
+              "href": "https://www.iwp.ru/",
+              "label" : "iwp.ru"}}},
+
+          {
           "name": "Cookie",
           "cfg": {
             "externalCookieUrl" : "",

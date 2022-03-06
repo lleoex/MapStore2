@@ -1,7 +1,7 @@
 {
-    "locale": "en-US",
+    "locale": "ru-RU",
     "messages": {
-        "Language": "Language",
+        "Language": "Язык",
         "msgId0": "{name} took {numPhotos, plural, =0 {no photos} =1 {one photo} other {# photos}} on {takenDate, date, long}.",
         "htmlTest": "{name} {surname}",
         "about_title": "About",
@@ -20,16 +20,16 @@
         "about_h21": "Credits",
         "about_p6": "MapStore is made by:",
         "enable": "Enable",
-        "layers": "Layers",
+        "layers": "Слои",
         "warning": "Warning",
         "errorTitleDefault": "Error",
         "errorDefault": "An error occurred.",
-        "pageInfoShowMore": "Results {count} of {total}",
-        "showMore": "Show more...",
-        "collapse": "Collapse",
-        "expand": "Expand",
-        "Links": "Links",
-        "Forbidden": "Forbidden",
+        "pageInfoShowMore": "Показано {count} из {total}",
+        "showMore": "Показать больше...",
+        "collapse": "Свернуть",
+        "expand": "Развернуть",
+        "Links": "Ссылки",
+        "Forbidden": "Запрещено",
         "layerNameChangeError": {
             "title": "Name change error",
             "message": "The layer failed to reload with a changed name"
@@ -284,15 +284,15 @@
         },
         "home":{
             "open": "Open",
-             "title": "DEPARTMENT OF RIVER BASIN HYDROLOGY<br/>WPI RAS ",
-            "shortDescription": "Hydrological modelling system in the Amur river bassin",
+            "title" : "Отдел гидрологии речных бассейнов<br/>ИВП РАН",
+            "shortDescription": "Система гидрологического моделирования в бассейне р. Амур",
             "forkMeOnGitHub": "Fork me on GitHub",
             "description": "MapStore has been developed to create, save and share in a simple and intuitive way maps and mashups created selecting contents coming from well-known sources like OpenStreetMap, Google Maps or from services provided by organizations using open protocols like OGC WMS, WFS, WMTS or TMS and so on...<br/>Visit the <a href=\"https://mapstore.readthedocs.io/en/latest/\">home page</a> for more details.",
             "Applications": "Applications",
             "Examples": "Examples",
             "LinkedinGroup": "Mapstore Linkedin Group",
             "scrollTop": "Scroll to the top of the page",
-            "footerDescription": "<strong>GeoSolutions</strong> <a href=\"mailto:info@geosolutionsgroup.com\">info@geosolutionsgroup.com</a> <strong>US</strong> +1 (301) 337-7055 -  <strong>Italy</strong>: +39 0584 962313",
+            "footerDescription": "<strong>Институт водных проблем РАН</strong> <a href=\"mailto:hydrowpi@iwp.ru\">hydrowpi@iwp.ru</a> <strong>RU</strong>  +7 (499) 783-35-80 ",
             "ml": {
                 "title": "Keep in touch and stay up-to-date with the mailing lists",
                 "subscribe_users": "Subscribe Users Mailing List",
@@ -315,15 +315,15 @@
             "editMapMetadata":"Edit map properties",
             "mapTypes_combo": "Select map viewer: ",
             "theme_combo": "Select theme:",
-            "maps_title": "Maps",
-            "locales_combo": "Language:",
-            "featuredMaps": "Featured"
+            "maps_title": "Карты",
+            "locales_combo": "Язык:",
+            "featuredMaps": "Избранное"
         },
         "newMap": "New map",
         "newMapEmpty": "Empty map",
         "newMapContext": "Existing context",
 		"maps": {
-            "title": "Maps",
+            "title": "Карты",
             "addToFeaturedMaps": "Add to featured maps",
             "removeFromFeaturedMaps": "Remove from featured maps",
             "feedback": {
@@ -368,7 +368,7 @@
                 "showDetails": "Show details"
             },
             "contents": {
-                "title": "Contents"
+                "title": "Содержимое"
             },
             "dashboards": {
                 "newDashboard": "New dashboard",
@@ -381,7 +381,7 @@
                 "errorLoadingDashboards": "There was an error loading dashboards."
             },
             "maps": {
-                "title": "Maps ({count})",
+                "title": "Карты ({count})",
                 "noMapAvailable": "No map available",
                 "createNewOne": "Create a new one",
                 "unsavedMapConfirmTitle": "Unsaved changes",

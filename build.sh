@@ -34,7 +34,7 @@ npm test
 
 echo "Creating Documentation"
 echo `date`
-npm run doc
+#npm run doc
 
 echo "Building final WAR package"
 echo `date`
