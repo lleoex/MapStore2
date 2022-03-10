@@ -5,7 +5,13 @@
  * This source code is licensed under the BSD-style license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import Cesium from '../../../libs/cesium';
+import * as Cesium from 'cesium';
+// it's not possible to load directly from the module name `cesium/Build/Cesium/Widgets/widgets.css`
+// see https://github.com/CesiumGS/cesium/issues/9212
+import 'cesium/index.css';
+
+import '@znemz/cesium-navigation/dist/index.css';
+import viewerCesiumNavigationMixin from '@znemz/cesium-navigation';
 
 import PropTypes from 'prop-types';
 import Rx from 'rxjs';
@@ -22,7 +28,7 @@ import {
 } from '../../../utils/MapUtils';
 import { reprojectBbox } from '../../../utils/CoordinatesUtils';
 import assign from 'object-assign';
-import { throttle } from 'lodash';
+import { throttle, isEqual } from 'lodash';
 
 class CesiumMap extends React.Component {
     static propTypes = {
@@ -43,7 +49,9 @@ class CesiumMap extends React.Component {
         zoomToHeight: PropTypes.number,
         registerHooks: PropTypes.bool,
         hookRegister: PropTypes.object,
-        viewerOptions: PropTypes.object
+        viewerOptions: PropTypes.object,
+        orientate: PropTypes.object,
+        zoomControl: PropTypes.bool
     };
 
     static defaultProps = {
@@ -84,7 +92,7 @@ class CesiumMap extends React.Component {
     componentDidMount() {
         const creditContainer = document.querySelector(this.props.mapOptions?.attribution?.container || '#footer-attribution-container');
         let map = new Cesium.Viewer(this.getDocument().getElementById(this.props.id), assign({
-            imageryProvider: Cesium.createOpenStreetMapImageryProvider(), // redefining to avoid to use default bing (that queries the bing API without any reason, because baseLayerPicker is false, anyway)
+            imageryProvider: new Cesium.OpenStreetMapImageryProvider(), // redefining to avoid to use default bing (that queries the bing API without any reason, because baseLayerPicker is false, anyway)
             baseLayerPicker: false,
             animation: false,
             fullscreenButton: false,
@@ -105,13 +113,18 @@ class CesiumMap extends React.Component {
         if (this.props.registerHooks) {
             this.registerHooks();
         }
+        map.extend(viewerCesiumNavigationMixin, {
+            enableCompass: true,
+            enableZoomControls: this.props.zoomControl,
+            enableDistanceLegend: false
+        });
         map.scene.globe.baseColor = Cesium.Color.WHITE;
         map.imageryLayers.removeAll();
         map.camera.moveEnd.addEventListener(this.updateMapInfoState);
         this.hand = new Cesium.ScreenSpaceEventHandler(map.scene.canvas);
         this.subscribeClickEvent(map);
-        this.hand.setInputAction(throttle(this.onMouseMove.bind(this), 500), Cesium.ScreenSpaceEventType.MOUSE_MOVE);
 
+        this.hand.setInputAction(throttle(this.onMouseMove.bind(this), 500), Cesium.ScreenSpaceEventType.MOUSE_MOVE);
         map.camera.setView({
             destination: Cesium.Cartesian3.fromDegrees(
                 this.props.center.x,
@@ -142,12 +155,31 @@ class CesiumMap extends React.Component {
         return false;
     }
 
+    componentDidUpdate(prevProps) {
+        if (this.props?.orientate && prevProps && (!isEqual(this.props.orientate, prevProps?.orientate))) {
+            const position = {
+                destination: Cesium.Cartesian3.fromDegrees(
+                    parseFloat(this.props.orientate.x),
+                    parseFloat(this.props.orientate.y),
+                    this.getHeightFromZoom(parseFloat(this.props.orientate.z))
+                ),
+                orientation: {
+                    heading: parseFloat(this.props.orientate.heading),
+                    pitch: parseFloat(this.props.orientate.pitch),
+                    roll: parseFloat(this.props.orientate.roll)
+                }
+            };
+            this.setView(position);
+        }
+    }
+
     componentWillUnmount() {
         this.clickStream$.complete();
         this.pauserStream$.complete();
         this.hand.destroy();
         // see comment in UNSAFE_componentWillMount
         this.getDocument().removeEventListener('gesturestart', this.gestureStartListener );
+        this.map.cesiumNavigation.destroy();
         this.map.destroy();
     }
 
@@ -179,7 +211,7 @@ class CesiumMap extends React.Component {
     };
 
     onMouseMove = (movement) => {
-        if (this.props.onMouseMove && movement.endPosition) {
+        if (this.props.onMouseMove && movement.endPosition && this.map?.camera) {
             const cartesian = this.map.camera.pickEllipsoid(movement.endPosition, this.map.scene.globe.ellipsoid);
             let cartographic = ClickUtils.getMouseXYZ(this.map, movement) || cartesian && Cesium.Cartographic.fromCartesian(cartesian);
             if (cartographic) {

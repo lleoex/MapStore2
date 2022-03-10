@@ -10,7 +10,7 @@ import ReactDOM from 'react-dom';
 import CesiumMap from '../Map';
 import CesiumLayer from '../Layer';
 import expect from 'expect';
-import Cesium from '../../../../libs/cesium';
+import * as Cesium from 'cesium';
 import {
     getHook,
     ZOOM_TO_EXTENT_HOOK,
@@ -21,8 +21,6 @@ import {
 
 import '../../../../utils/cesium/Layers';
 import '../plugins/OSMLayer';
-
-window.CESIUM_BASE_URL = "web/client/libs/Cesium/Build/Cesium";
 
 describe('CesiumMap', () => {
 
@@ -142,21 +140,25 @@ describe('CesiumMap', () => {
 
         const cesiumMap = map.map;
         cesiumMap.camera.moveEnd.addEventListener(() => {
-            // check arguments
-            expect(spy.calls[0].arguments.length).toEqual(8);
-            expect(spy.calls.length).toBe(expectedCalls);
-            // check camera moved
-            expect(Math.round(spy.calls[0].arguments[0].y * precision) / precision).toBe(30);
-            expect(Math.round(spy.calls[0].arguments[0].x * precision) / precision).toBe(20);
-            expect(spy.calls[0].arguments[1]).toEqual(5);
+            try {
+                // check arguments
+                expect(spy.calls[0].arguments.length).toEqual(8);
+                expect(spy.calls.length).toBe(expectedCalls);
+                // check camera moved
+                expect(Math.round(spy.calls[0].arguments[0].y * precision) / precision).toBe(30);
+                expect(Math.round(spy.calls[0].arguments[0].x * precision) / precision).toBe(20);
+                expect(spy.calls[0].arguments[1]).toEqual(5);
 
-            expect(spy.calls[0].arguments[6].orientation.heading).toBe(1);
+                expect(spy.calls[0].arguments[6].orientation.heading).toBe(1);
 
-            for (let c = 0; c < spy.calls.length; c++) {
-                expect(spy.calls[c].arguments[2].bounds).toExist();
-                expect(spy.calls[c].arguments[2].crs).toExist();
-                expect(spy.calls[c].arguments[3].height).toExist();
-                expect(spy.calls[c].arguments[3].width).toExist();
+                for (let c = 0; c < spy.calls.length; c++) {
+                    expect(spy.calls[c].arguments[2].bounds).toExist();
+                    expect(spy.calls[c].arguments[2].crs).toExist();
+                    expect(spy.calls[c].arguments[3].height).toExist();
+                    expect(spy.calls[c].arguments[3].width).toExist();
+                }
+            } catch (e) {
+                done(e);
             }
             done();
 
@@ -241,6 +243,46 @@ describe('CesiumMap', () => {
         hook([10, 10, 20, 20], {crs: "EPSG:4326", duration: 0});
         // unregister hook
         registerHook(ZOOM_TO_EXTENT_HOOK);
+    });
+    it('should reorder the layer correctly even if the position property of layer exceed the imageryLayers length', () => {
+
+        let map = ReactDOM.render(
+            <CesiumMap id="mymap" center={{ y: 43.9, x: 10.3 }} zoom={11}>
+                <CesiumLayer type="wms" position={1} options={{ url: '/wms', name: 'layer01' }} />
+                <CesiumLayer type="wms" position={3} options={{ url: '/wms', name: 'layer02' }} />
+                <CesiumLayer type="wms" position={6} options={{ url: '/wms', name: 'layer03' }} />
+            </CesiumMap>,
+            document.getElementById('container')
+        );
+
+        expect(map).toBeTruthy();
+        expect(ReactDOM.findDOMNode(map).id).toBe('mymap');
+        expect(map.map.imageryLayers._layers.map(({ _position }) => _position)).toEqual([1, 3, 6]);
+        expect(map.map.imageryLayers._layers.map(({ imageryProvider }) => imageryProvider.layers)).toEqual([ 'layer01', 'layer02', 'layer03' ]);
+
+        map = ReactDOM.render(
+            <CesiumMap id="mymap" center={{ y: 43.9, x: 10.3 }} zoom={11}>
+                <CesiumLayer type="wms" position={1} options={{ url: '/wms', name: 'layer01' }} />
+                <CesiumLayer type="wms" position={3} options={{ url: '/wms', name: 'layer02' }} />
+                <CesiumLayer type="wms" position={4} options={{ url: '/wms', name: 'layer03' }} />
+            </CesiumMap>,
+            document.getElementById('container')
+        );
+
+        expect(map.map.imageryLayers._layers.map(({ _position }) => _position)).toEqual([1, 3, 4]);
+        expect(map.map.imageryLayers._layers.map(({ imageryProvider }) => imageryProvider.layers)).toEqual([ 'layer01', 'layer02', 'layer03' ]);
+
+        map = ReactDOM.render(
+            <CesiumMap id="mymap" center={{ y: 43.9, x: 10.3 }} zoom={11}>
+                <CesiumLayer type="wms" position={1} options={{ url: '/wms', name: 'layer01' }} />
+                <CesiumLayer type="wms" position={3} options={{ url: '/wms', name: 'layer02' }} />
+                <CesiumLayer type="wms" position={2} options={{ url: '/wms', name: 'layer03' }} />
+            </CesiumMap>,
+            document.getElementById('container')
+        );
+
+        expect(map.map.imageryLayers._layers.map(({ _position }) => _position)).toEqual([1, 2, 3]);
+        expect(map.map.imageryLayers._layers.map(({ imageryProvider }) => imageryProvider.layers)).toEqual([ 'layer01', 'layer03', 'layer02' ]);
     });
     describe("hookRegister", () => {
         it("default", () => {
