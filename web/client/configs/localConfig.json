@@ -606,7 +606,10 @@
 
         , "ScrollTop", "Notifications"],
         "maps": [
-          "HomeDescription",
+          {
+            "name": "HomeDescription",
+            "cfg" : {"name" : "Отдел гидрологии речных бассейнов ИВП РАН"}
+          },
           "CreateNewMap",
           { "name": "FeaturedMaps1", "hideFrom": ["NavMenu"]},
           { "name": "ContentTabs1", "hideFrom": ["NavMenu"]},
