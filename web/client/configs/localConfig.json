@@ -10,7 +10,8 @@
           "https://gs-stable.geo-solutions.it/geoserver",
           "https://gs-stable.geo-solutions.it:443/geoserver",
           "http://gs-stable.geo-solutions.it/geoserver",
-          "http://gs-stable.geo-solutions.it:443/geoserver"
+          "http://gs-stable.geo-solutions.it:443/geoserver",
+          "http://geoserver.meteoprim.ru/geoserver"
         ]
     },
     "geoStoreUrl": "rest/geostore/",
