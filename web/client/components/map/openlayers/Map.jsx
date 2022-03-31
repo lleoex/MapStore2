@@ -473,7 +473,8 @@ class OpenlayersMap extends React.Component {
     createView = (center, zoom, projection, options, limits = {}) => {
         // limit has a crs defined
         const extent = limits.restrictedExtent && limits.crs && reprojectBbox(limits.restrictedExtent, limits.crs, normalizeSRS(projection));
-        const newOptions = !options || (options && !options.view) ? assign({}, options, { extent }) : assign({}, options);
+        const newOptions = !options || (options && !options.view) ? assign({}, options, { extent: this.props.maxExtent }) : assign({}, options);
+      
         /*
         * setting the zoom level in the localConfig file is co-related to the projection extent(size)
         * it is recommended to use projections with the same coverage area (extent). If you want to have the same restricted zoom level (minZoom)

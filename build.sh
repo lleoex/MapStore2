@@ -14,7 +14,7 @@ set -e
 
 echo "Running NPM install to update dependencies"
 echo `date`
-npm install
+#npm install
 
 echo "Building MS2 bundles"
 echo `date`
@@ -22,15 +22,15 @@ npm run compile
 
 echo "Cleanup Documentation"
 echo `date`
-npm run cleandoc
+#npm run cleandoc
 
 echo "Checking syntax"
 echo `date`
-npm run lint
+#npm run lint
 
 echo "Run MapStore2 tests"
 echo `date`
-npm test
+#npm test
 
 echo "Creating Documentation"
 echo `date`
@@ -59,4 +59,4 @@ fi
 
 echo "Final Cleanup"
 echo `date`
-npm run cleandoc
+#npm run cleandoc
