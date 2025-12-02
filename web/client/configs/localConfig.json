@@ -11,7 +11,7 @@
           "https://gs-stable.geo-solutions.it:443/geoserver",
           "http://gs-stable.geo-solutions.it/geoserver",
           "http://gs-stable.geo-solutions.it:443/geoserver",
-          "http://geoserver.meteoprim.ru/geoserver"
+          "http://geoserver1.meteoprim.ru/geoserver"
         ]
     },
     "geoStoreUrl": "rest/geostore/",
@@ -534,8 +534,12 @@
                 "override": {
                     "Toolbar": {
                         "alwaysVisible": true
-                    }
-                }
+                    },
+                  "useInitialExtent" : false
+                },
+          "cfg": {
+            "useInitialExtent" : false
+          }
             }, {
                 "name": "Locate",
                 "override": {
